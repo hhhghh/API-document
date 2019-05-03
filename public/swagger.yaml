@@ -10,6 +10,7 @@ info:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 host: "localhost:3000"
+basePath: /api/v1
 
 tags:
 - name: "Team"
@@ -29,10 +30,10 @@ tags:
     url: "https://github.com/hhhghh/Dashboard/blob/master/api%E8%AE%BE%E8%AE%A1.md"   
     
 schemes:
-- "https"
 - "http"
+- "https"
 paths:
-  /api/v1/team/Id:
+  /team/Id:
     get:
       tags:
       - "Team"
@@ -59,7 +60,7 @@ paths:
         413:
           description: "Team not found"
       
-  /api/v1/team/Leader:
+  /team/Leader:
     get:
       tags:
       - "Team"
@@ -116,7 +117,7 @@ paths:
         414:
           description: "Team member is wrong"
           
-  /api/v1/team/Member:
+  /team/Member:
     get:
       tags:
       - "Team"
@@ -146,7 +147,7 @@ paths:
         413:
           description: "Is not team member"
           
-  /api/v1/team/Name:
+  /team/Name:
     get:
       tags:
       - "Team"
@@ -174,7 +175,7 @@ paths:
         413:
           description: "Team not found"
           
-  /api/v1/team/Label:
+  /team/Label:
     get:
       tags:
       - "Team"
@@ -202,7 +203,7 @@ paths:
         413:
           description: "Team not found"
           
-  /api/v1/team/MemberName:
+  /team/MemberName:
     get:
       tags:
       - "Team"
@@ -230,7 +231,7 @@ paths:
         413:
           description: "Not joining the team" 
           
-  /api/v1/team:
+  /team:
     post:
       tags:
       - "Team"
@@ -321,7 +322,7 @@ paths:
         413:
           description: "Team leader is wrong"
           
-  /api/v1/team/Member/Invitation:  
+  /team/Member/Invitation:  
     post:
       tags:
       - "Team"
@@ -349,7 +350,7 @@ paths:
         414:
           description: "Not allowed to add"
     
-  /api/v1/team/Member/Addition:  
+  /team/Member/Addition:  
     post:
       tags:
       - "Team"
@@ -377,7 +378,7 @@ paths:
         414:
           description: "Not allowed to add"    
   
-  /api/v1/team/Member/Dislodge:  
+  /team/Member/Dislodge:  
     delete:
       tags:
       - "Team"
@@ -417,7 +418,7 @@ paths:
         415:
           description: "The team does not have that user"
   
-  /api/v1/team/Member/Departure:  
+  /team/Member/Departure:  
     delete:
       tags:
       - "Team"
@@ -451,7 +452,329 @@ paths:
           description: "Team leader cannot leave the team"    
         415:
           description: "There is no team"
+
+  /task:
+    get:
+      tags:
+        - "Task"
+      summary: "find tasks satisfiy the restrictions"
+      description: |
+        Find tasks the satisfiy the type and range, and can be seen by the user,
+        type:任务类型,
+        range:任务发布范围 `all`或者`group.id` 根据type
+        range查找所有任务Tasks
+        (根据user.id从`屏蔽列表`找到屏蔽该user的releaser查找releaser所有发布的任务t_set0. 根据Tasks信息，比较每个task.score与user.score， 若task.score > user.score, t_set1.append(task) 返回(Tasks - t_set0 - t_set1)
+      operationId: "getTask"
+      produces:
+        - "application/json"
+        - "application/xml"
+      parameters:
+        # - name: "acceptableOnly"
+        #   in: "query"
+        #   description: "Whether you want the acceptable only"
+        #   required: false
+        #   type: "boolean"
+        - name: "type"
+          in: "query"
+          description: "The desired type, which can be `all` or `1,2,3` means `1 or 2 or 3`"
+          required: true
+          type: "string"
+        - name: "range"
+          in: "query"
+          description: "The desired range, which can be `all` or some group id, as `type`'s description"
+          required: true
+          type: "string"
+        - name: "username"
+          in: "query"
+          description: "The desired username"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Successful execute, find some (or no) task"
+          schema:
+            $ref: "#/definitions/task"
+        412:
+          description: "Parameters is not satisfiy required"
+          
+    post:
+      tags:
+      - "Task"
+      summary: "Create a task"
+      description: "Returns a simgle task"
+      operationId: "CreateTask"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "body"
+        in: "body"
+        description: "Create task object"
+        required: true
+        schema:
+          $ref: "#/definitions/task_create_param"
+      responses:
+        200:
+          description: "Successful create a task"
+          schema:
+            $ref: "#/definitions/task"
+        412:
+          description: "Abnormal"
+        413:
+          description: "Team leader does not exist"
+        414:
+          description: "Some Team members does not exist"
+        416:
+          description: "Parameter incomplete"
     
+    delete:
+      tags:
+        - "Task"
+      summary: "Delete a task by task id"
+      description: "Try to delete a task by task id, should apply other informations for verification"
+      produces:
+        - "application/json"
+        - "application/xml"
+      parameters:
+        - name: "task_id"
+          in: "query"
+          description: "The task id"
+          type: "string"
+          required: true
+        - name: "Others param"
+          in: "query"
+          description: "TODO, may use session or something ... At this time, just don't need that."
+          type: "string"
+          required: true
+      responses:
+        200:
+          description: "ok"
+        412:
+          description: "params wrong"
+        403:
+          description: "Unauthorized, may should use 401"
+          
+
+  /task/findByPublisher:
+    get:
+      tags:
+        - "Task"
+      summary: "Find all tasks established by publisher"
+      description: "Find all tasks established by publisher"
+      produces:
+        - "application/json"
+        - "application/xml"
+      parameters:
+        - name: "username"
+          in: "query"
+          description: "the publisher's username"
+          type: "string"
+          required: true
+        - name: "type"
+          in: "query"
+          description: "the desired type"
+          type: "string"
+        - name: "range"
+          in: "query"
+          description: "the desired range"
+          type: "string"
+        - name: "state"
+          in: "query"
+          description: "the desired state of a task"
+          type: "string"
+      responses:
+        200:
+          description: "Successful execute, find some (or no) task"
+          schema:
+            $ref: "#/definitions/task"
+        412:
+          description: "Parameters is not satisfiy required"
+
+
+  /task/findByTaskId:
+    get:
+      tags:
+        - "Task"
+      summary: "Find the task by the task id"
+      description: "Find the task by the task id"
+      produces:
+        - "application/json"
+        - "application/xml"
+      parameters:
+        - name: "task_id"
+          in: "query"
+          description: "the task's id"
+          type: "integer"
+          required: true
+      responses:
+        200:
+          description: "Successful execute, find some (or no) task"
+          schema:
+            $ref: "#/definitions/task"
+        412:
+          description: "Parameters is not satisfiy required"
+
+                     
+  /task/findByAccepter:
+    get:
+      tags:
+        - "Task"
+      summary: "Find all tasks accepted by the user"
+      description: "Find all tasks be accepted by user"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "username"
+          in: "query"
+          description: "the user's username"
+          type: "string"
+          required: true
+        - name: "type"
+          in: "query"
+          description: "the desired type"
+          type: "string"
+        - name: "range"
+          in: "query"
+          description: "the desired range"
+          type: "string"
+        - name: "state"
+          in: "query"
+          description: "the desired state"
+          type: "string"
+      responses:
+        200:
+          description: "Successful execute, find some (or no) task"
+          schema:
+            $ref: "#/definitions/task"
+        412:
+          description: "Parameters is not satisfiy required"
+  
+  /task/state:
+    get:
+      tags:
+        - "Task"
+      summary: "Find a task by task id and the accepter's username"
+      description: "Set both task_id and username, then the api will return the relations state."
+      produces:
+        - "application/json"
+      parameters:
+        - name: "task_id"
+          in: "query"
+          description: "the desired type"
+          type: "string"
+          required: true
+        - name: "username"
+          in: "query"
+          description: "the user's username"
+          type: "string"
+          required: true
+      responses:
+        200:
+          description: "Successful execute, find some (or no) task"
+          schema:
+            $ref: "#/definitions/task"
+        412:
+          description: "Parameters is not satisfiy required"
+  
+  /task/acceptance:
+    get: 
+      tags:
+        - "Task"
+      summary: "Get relations between a user and a task"
+      description: "Get relations between a user and a task"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "username"
+          in: "query"
+          description: "the user's username"
+          type: "string"
+          required: true
+        - name: "task_id"
+          in: "query"
+          description: "the desired type"
+          type: "string"
+          required: true
+      responses:
+        200:
+          description: "Successful execute, find some (or no) task"
+          schema:
+            $ref: "#/definitions/task"
+        412:
+          description: "Parameters is not satisfiy required"
+          
+    post:
+      tags:
+        - "Task"
+      summary: "User accept a task"
+      produces:
+        - "application/json"
+        - "application/xml"
+      parameters:
+        - name: "body"
+          in: "body"
+          description: "Accept a task"
+          required: true
+          schema:
+            $ref: "#/definitions/task_acceptance"
+      responses:
+        200:
+          description: "Successful execute, find some (or no) accepter"
+          schema:
+            $ref: "#/definitions/task"
+        412:
+          description: "Parameters is not satisfiy required"
+          
+    delete:
+      tags:
+        - "Task"
+      summary: "Quit a task"
+      description: "Quit a task"
+      produces:
+        - "application/json"
+        - "application/xml"
+      parameters:
+        - name: "task_id"
+          in: "query"
+          description: "the task's id"
+          type: "integer"
+          required: true
+        - name: "username"
+          in: "query"
+          description: "the quiter's username"
+          type: "string"
+          required: true
+      responses:
+        200:
+          description: "Successful execute, find some (or no) task"
+          schema:
+            $ref: "#/definitions/task"
+        412:
+          description: "Parameters is not satisfiy required"
+  
+  /task/complement:
+    post:
+      tags:
+        - "Task"
+      summary: "Complete a task"
+      description: "Complete a task, remember to give a score"
+      produces:
+        - "application/json"
+        - "application/xml"
+      parameters:
+        - name: "body"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/task_complement"
+      responses:
+        200:
+          description: "Successful execute, find some (or no) task"
+          schema:
+            $ref: "#/definitions/task"
+        412:
+          description: "Parameters is not satisfiy required"
+
 # securityDefinitions:
 #   petstore_auth:
 #     type: "oauth2"
@@ -653,4 +976,113 @@ definitions:
         example: ""
     xml:
       name: "Addition"
-    
+
+  task:
+    type: "object"
+    required:
+    - "task_id"
+    - "introduction"
+    - "money"
+    - "score"
+    - "number"
+    - "publisher"
+    - "state"
+    - "type"
+    properties:
+      task_id:
+        type: "integer"
+        format: "int32"
+      introduction:
+        type: "string"
+        example: "a task can be done"
+      money:
+        type: "number"
+        example: 10
+        description: "The money will be paid"
+      max_accepter_number:
+        type: "integer"
+        example: "100"
+        description: "Max number of people who can accept the task"
+      publisher:
+        type: "string"
+        example: "hyx"
+        description: "The username of the release user"
+      state:
+        type: "string"
+        example: "processing"
+      type:
+        type: "integer"
+        example: 2
+    xml:
+      name: "task"
+
+  task_create_param:
+    type: "object"
+    required:
+      - "title"
+      - "introduction"
+      - "money"
+      - "score"
+      - "number"
+      - "publisher"
+      - "type"
+    properties:
+      title:
+        type: "string"
+        example: "Help me to buy food"
+      introduction:
+        type: "string"
+        example: "a task can be done"
+      money:
+        type: "number"
+        example: 10
+        description: "The money will be paid"
+      max_accepter_number:
+        type: "integer"
+        example: "100"
+        description: "Max number of people who can accept the task"
+      publisher:
+        type: "string"
+        example: "hyx"
+        description: "The username of the release user"
+      type:
+        type: "integer"
+        example: 2
+    xml:
+      name: "task"
+  
+  task_acceptance:
+    type: "object"
+    required: 
+      - "task_id"
+      - "username"
+    properties:
+      task_id:
+        type: "integer"
+        example: 2
+      username:
+        type: "string"
+        example: "hyx"
+        description: "The accepter's username"
+    xml:
+      name: "task_acceptance"
+  
+  task_complement:
+    type: "object"
+    required: 
+      - "task_id"
+      - "username"
+      - "score"
+    properties:
+      task_id:
+        type: "integer"
+        example: 2
+      username:
+        type: "string"
+        example: "hyx"
+      score:
+        type: "number"
+        description: "The score that give to the publisher"
+        example: 4.5
+    xml:
+      name: "task_complement"
