@@ -3,12 +3,6 @@ info:
   description: "This is a sample test.  You can find out more at [https://github.com/hhhghh/Dashboard](https://github.com/hhhghh/Dashboard)     For this sample, you can use the api key `special-key` to test the authorization filters."
   version: "1.0.0"
   title: "Happy spare money"
-  termsOfService: "http://swagger.io/terms/"
-  contact:
-    email: "apiteam@swagger.io"
-  license:
-    name: "Apache 2.0"
-    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 host: "139.196.79.193"
 basePath: /api/v1
 
