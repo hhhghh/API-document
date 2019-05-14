@@ -770,6 +770,253 @@ paths:
         412:
           description: "Parameters is not satisfiy required"
 
+  /user/login:
+    post:
+      tags:
+        - "User"
+      summary: "login"
+      description: "Log in according to the login type, user name and password"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/user_login"
+      responses:
+        200:
+          description: "登录成功"
+        412:
+          description: "用户名或密码错误"
+        413:
+          description: "账户类型错误"
+        500:
+          description: "服务器异常" 
+
+  /user/getuser:
+    get:
+      tags:
+        - "User"
+      summary: "get user information"
+      description: "get user information by username"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "username"
+        in: "query"
+        required: true
+        description: "username"
+      responses:
+        200:
+          description: "查询成功并返回用户基本信息"
+          schema:
+            $ref: "#/definitions/user_getinfo"
+        400:
+          description: "参数错误"
+        412:
+          description: "查询用户不存在"
+        500:
+          description: "服务器异常" 
+
+  /user/getorg:
+    get:
+      tags:
+        - "User"
+      summary: "get organization information"
+      description: "get organization information by organization's name"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "organization's name"
+        in: "query"
+        required: true
+        description: "organization's name"
+      responses:
+        200:
+          description: "查询成功并返回用户基本信息"
+          schema:
+            $ref: "#/definitions/user_getorg"
+        400:
+          description: "参数错误"
+        412:
+          description: "查询机构不存在"
+        500:
+          description: "服务器异常" 
+
+  /user/update:
+    put:
+      tags:
+        - "User"
+      summary: "update user or organization information"
+      description: "update user information"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        description: "update information"
+        schema:
+          $ref: "#/definitions/user_update"  
+      responses:
+        200:
+          description: "修改成功并返回修改后的用户信息"
+        412:
+          description: "更新失败"
+        500:
+          description: "服务器异常"
+  
+  /user/score:
+    post:
+      tags:
+        - "User"
+      summary: "update user's score"
+      description: "update user's score"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        description: "update score"
+        schema:
+          $ref: "#/definitions/user_score"  
+      responses:
+        200:
+          description: "修改成功并返回修改后的信用分数"
+        412:
+          description: "更新失败"
+        500:
+          description: "服务器异常"
+  
+  /user/userblacklist:
+    post:
+      tags:
+        - "User"
+      summary: "user blacklist"
+      description: "user blacklist user or organization"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        description: "username1 username2"
+        schema:
+          $ref: "#/definitions/user_blacklist"  
+      responses:
+        200:
+          description: "拉黑成功"
+        402:
+          description: "被拉黑的机构或用户不存在"
+        403:
+          description: "用户不存在"
+        405:
+          description: "机构没有拉黑功能"
+        406:
+          description: "已拉黑，不能重复拉黑"
+        500:
+          description: "服务器异常" 
+
+  /user/teamblacklist:
+    post:
+      tags:
+        - "User"
+      summary: "team blacklist"
+      description: "team blacklist organization"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        description: "ins_name team_id"
+        schema:
+          $ref: "#/definitions/team_blacklist"  
+      responses:
+        200:
+          description: "拉黑成功"
+        402:
+          description: "被拉黑的机构"
+        403:
+          description: "该用户不是机构"
+        405:
+          description: "小组不存在"
+        406:
+          description: "已拉黑，不能重复拉黑"
+        500:
+          description: "服务器异常" 
+
+  /user/usercancelblack:
+    post:
+      tags:
+        - "User"
+      summary: "user cancel blacklist"
+      description: "user cancel blacklist organization"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        description: "username1 username2"
+        schema:
+          $ref: "#/definitions/user_cancelblacklist"  
+      responses:
+        200:
+          description: "取消拉黑成功"
+        402:
+          description: "取消拉黑的机构或用户不存在"
+        403:
+          description: "用户不存在"
+        405:
+          description: "没有拉黑过的用户或机构不能取消拉黑"
+        406:
+          description: "机构不能取消拉黑"
+        500:
+          description: "服务器异常"
+
+  /user/teamcancelblack:
+    post:
+      tags:
+        - "User"
+      summary: "team blacklist"
+      description: "team blacklist organization"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        description: "ins_name team_id"
+        schema:
+          $ref: "#/definitions/team_cancelblacklist"  
+      responses:
+        200:
+          description: "取消屏蔽成功"
+        402:
+          description: "取消拉黑机构不存在"
+        403:
+          description: "该用户不是机构"
+        405:
+          description: "小组不存在"
+        406:
+          description: "没有拉黑无法取消拉黑"
+        500:
+          description: "服务器异常"   
+
+
+
 # securityDefinitions:
 #   petstore_auth:
 #     type: "oauth2"
@@ -1080,3 +1327,249 @@ definitions:
         example: 4.5
     xml:
       name: "task_complement"
+
+  user_login:
+    type: "object"
+    require:
+      -"type"
+      -"username"
+      -"password"
+    properties:
+      type:
+        type: "integer"
+        example: 0
+      username:
+        type: "string"
+        example: "hzh"
+      password:
+        type: "string"
+        example: "123"
+    xml:
+      name: "user_login"
+    
+  user_getinfo:
+    type: "object"
+    require:
+      -"code"
+      -"msg"
+      -"data"
+    properties:
+      code:
+        type: "integer"
+        example: 200
+      msg:
+        type: "string"
+        example: "success"
+      data:
+        type: "object"
+        require:
+          -"username"
+          -"name"
+          -"school"
+          -"grade"
+          -"phone"
+          -"weChat"
+          -"qq"
+        properties:
+          username:
+            type: "string"
+            example: "hzh"
+          name:
+            type: "string"
+            example: "hzh"
+          school:
+            type: "string"
+            example: "SYSU"
+          grade:
+            type: "integer"
+            example: 4
+          phone:
+            type: "string"
+            example: null
+          wechat:
+            type: "string"
+            example: null
+          qq:
+            type: "string"
+            example: null         
+    xml:
+      name: "user_getinfo"
+  
+  user_getorg:
+    type: "object"
+    require:
+      -"code"
+      -"msg"
+      -"data"
+    properties:
+      code:
+        type: "integer"
+        example: 200
+      msg:
+        type: "string"
+        example: "success"
+      data:
+        type: "object"
+        require:
+          -"orgname"
+          -"score"
+          -"school"
+          -"wechat"
+          -"qq"
+          -"phone_number"
+        properties:
+          orgname:
+            type: "string"
+            example: "test4"
+          score:
+            type: "integer"
+            example: 100
+          school:
+            type: "string"
+            example: "SYSU"
+          wechat:
+            type: "string"
+            example: null
+          qq:
+            type: "string"
+            example: null
+          phone_number:
+            type: "string"
+            example: null
+    xml:
+      name: "user_getorg"
+  
+  user_update:
+    type: "object"
+    require:
+      -"username"
+      -"password"
+      -"score"
+      -"money"
+      -"true_name"
+      -"school_name"
+      -"grade"
+      -"avatar"
+      -"nickname"
+      -"wechat"
+      -"QQ"
+      -"phone_number"
+      -"account_state"
+    properties:
+      username:
+        type: "string"
+        example: "hyx"
+      password:
+        type: "string"
+        example: "123"
+      score:
+        type: "integer"
+        example: 100
+      money:
+        type: "integet"
+        example: 1632
+      true_name:
+        type: "string"
+        example: "韩"
+      school_name:
+        type: "string"
+        example: "SYSU"
+      grade:
+        type: "integer"
+        example: 5
+      avatar:
+        type: "string"
+        example: "default url waiting be set"
+      nickname:
+        type: "string"
+        example: "hyx"
+      wechat:
+        type: "string"
+        example: null
+      QQ:
+        type: "string"
+        example: null
+      phone_number:
+        type: "string"
+        example: null
+      account_state:
+        type: "string"
+        example: 0
+    xml:
+      name: "user_update" 
+
+  user_score:
+    type: "object"
+    require:
+      -"username"
+      -"score"
+    properties:
+      username:
+        type: "string"
+        example: "hyx"
+      score:
+        type: "integer"
+        example: 20
+    xml:
+      name: "user_score"
+
+  user_blacklist:
+    type: "object"
+    require:
+      -"username1"
+      -"username2"
+    properties:
+      username1:
+        type: "string"
+        example: "hyx"
+      username2:
+        type: "string"
+        example: "hzh"
+    xml:
+      name: "user_blacklist"
+
+  team_blacklist:
+    type: "object"
+    require:
+      -"ins_name"
+      -"team_id"
+    properties:
+      ins_name:
+        type: "string"
+        example: "test4"
+      team_id:
+        type: "string"
+        example: "1"
+    xml:
+      name: "team_blacklist"
+
+  user_cancelblacklist:
+    type: "object"
+    require:
+      -"username1"
+      -"username2"
+    properties:
+      username1:
+        type: "string"
+        example: "hyx"
+      username2:
+        type: "string"
+        example: "hzh"
+    xml:
+      name: "user_cancelblacklist"
+
+  team_cancelblacklist:
+    type: "object"
+    require:
+      -"ins_name"
+      -"team_id"
+    properties:
+      ins_name:
+        type: "string"
+        example: "test4"
+      team_id:
+        type: "string"
+        example: "1"
+    xml:
+      name: "team_cancelblacklist"
+      
