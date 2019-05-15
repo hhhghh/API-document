@@ -50,10 +50,12 @@ paths:
           description: "Successful operation"
           schema:
             $ref: "#/definitions/Team"
+        213:
+          description: "Team not found"
+        400:
+          description: "Parameter incomplete"
         412:
           description: "Abnormal"
-        413:
-          description: "Team not found"
       
   /team/Leader:
     get:
@@ -80,10 +82,14 @@ paths:
       responses:
         200:
           description: "Is team leader"
+        212:
+          description: "Is not team leader"
+        213:
+          description: "Team not found"
+        400:
+          description: "Parameter incomplete"
         412:
           description: "Abnormal"
-        413:
-          description: "Is not team leader"
     
     post:
       tags:
@@ -104,13 +110,15 @@ paths:
 
       responses:
         200:
-          description: "Successful operation"
+          description: "Successful operation"        
+        212:
+          description: "Team leader is wrong"
+        211:
+          description: "Team member is wrong"
+        400:
+          description: "Parameter incomplete"
         412:
           description: "Abnormal"
-        413:
-          description: "Team leader is wrong"
-        414:
-          description: "Team member is wrong"
           
   /team/Member:
     get:
@@ -136,11 +144,15 @@ paths:
         type: "string"
       responses:
         200:
-          description: "Is team member"
+          description: "Is team member"      
+        211:
+          description: "Is not team member"
+        213:
+          description: "Team not found"
+        400:
+          description: "Parameter incomplete"
         412:
           description: "Abnormal"
-        413:
-          description: "Is not team member"
           
   /team/Name:
     get:
@@ -164,11 +176,13 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Team"
+              $ref: "#/definitions/Team"    
+        213:
+          description: "Team not found"
+        400:
+          description: "Parameter incomplete"
         412:
           description: "Abnormal"
-        413:
-          description: "Team not found"
           
   /team/Label:
     get:
@@ -193,10 +207,12 @@ paths:
             type: "array"
             items:
               $ref: "#/definitions/Team"
+        213:
+          description: "Team not found"
+        400:
+          description: "Parameter incomplete"
         412:
           description: "Abnormal"
-        413:
-          description: "Team not found"
           
   /team/MemberName:
     get:
@@ -220,11 +236,13 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Team"
+              $ref: "#/definitions/Team"       
+        213:
+          description: "Not joining the team" 
+        400:
+          description: "Parameter incomplete"
         412:
           description: "Abnormal"
-        413:
-          description: "Not joining the team" 
           
   /team:
     post:
@@ -247,16 +265,16 @@ paths:
         200:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/Team"
+            $ref: "#/definitions/Team"      
+        212:
+          description: "Team leader does not exist"
+        211:
+          description: "Some Team members does not exist"
+        400:
+          description: "Parameter incomplete"
         412:
           description: "Abnormal"
-        413:
-          description: "Team leader does not exist"
-        414:
-          description: "Some Team members does not exist"
-        416:
-          description: "Parameter incomplete"
-   
+         
     put:
       tags:
       - "Team"
@@ -277,15 +295,15 @@ paths:
         200:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/Team"
+            $ref: "#/definitions/Team"      
+        212:
+          description: "Team leader dose not exist or dose not correct"
+        213:
+          description: "Team does not exist"
+        400:
+          description: "Parameter incomplete"
         412:
           description: "Abnormal"
-        413:
-          description: "Team leader or team does not exist"
-        414:
-          description: "Team leader does not correct"
-        416:
-          description: "Parameter incomplete"
     
     delete:
       tags:
@@ -312,10 +330,14 @@ paths:
       responses:
         200:
           description: "Successful operation"
+        212:
+          description: "Team leader is wrong"
+        213:
+          description: "Team does not exist"
+        400:
+          description: "Parameter incomplete"
         412:
           description: "Abnormal"
-        413:
-          description: "Team leader is wrong"
           
   /team/Member/Invitation:  
     post:
@@ -338,12 +360,20 @@ paths:
       responses:
         200:
           description: "Successful operation"
+        210:
+          description: "User does not exist"
+        211:
+          description: "User is already in the group"
+        212:
+          description: "Team leader is wrong, team leader verification is required"
+        213:
+          description: "Team does not exist"
+        215:
+          description: "Not allowed to add"
+        400:
+          description: "Parameter incomplete"
         412:
           description: "Abnormal"
-        413:
-          description: "Team leader verification is required"
-        414:
-          description: "Not allowed to add"
     
   /team/Member/Addition:  
     post:
@@ -366,12 +396,20 @@ paths:
       responses:
         200:
           description: "Successful operation"
-        412:
-          description: "Abnormal"
-        413:
+        210:
+          description: "User does not exist"
+        211:
+          description: "User is already in the group"
+        213:
+          description: "Team does not exist"
+        214:
           description: "Team leader verification is required"
-        414:
-          description: "Not allowed to add"    
+        215:
+          description: "Not allowed to add"
+        400:
+          description: "Parameter incomplete"
+        412:
+          description: "Abnormal"         
   
   /team/Member/Dislodge:  
     delete:
@@ -403,15 +441,18 @@ paths:
 
       responses:
         200:
-          description: "Successful operation"
+          description: "Successful operation"        
+        211:
+          description: "The team does not have that user"
+        212:
+          description: "Team leader is wrong"
+        216:
+          description: "Team leader cannot be deleted"
+        400:
+          description: "Parameter incomplete"
         412:
           description: "Abnormal"
-        413:
-          description: "Team leader is wrong"
-        414:
-          description: "Team leader cannot be deleted"    
-        415:
-          description: "The team does not have that user"
+        
   
   /team/Member/Departure:  
     delete:
@@ -438,15 +479,18 @@ paths:
 
       responses:
         200:
-          description: "Successful operation"
+          description: "Successful operation"     
+        211:
+          description: "Team member is wrong"
+        213:
+          description: "There is no team"
+        216:
+          description: "Team leader cannot leave the team"
+        400:
+          description: "Parameter incomplete"
         412:
           description: "Abnormal"
-        413:
-          description: "Team member is wrong"
-        414:
-          description: "Team leader cannot leave the team"    
-        415:
-          description: "There is no team"
+        
 
   /task:
     get:
