@@ -604,22 +604,18 @@ paths:
         - "application/json"
         - "application/xml"
       parameters:
-        - name: "username"
+        - name: "publisher"
           in: "query"
           description: "the publisher's username"
           type: "string"
           required: true
         - name: "type"
           in: "query"
-          description: "the desired type"
+          description: "the desired type, can be `all` or `1` or `1,2,3`"
           type: "string"
         - name: "range"
           in: "query"
-          description: "the desired range"
-          type: "string"
-        - name: "state"
-          in: "query"
-          description: "the desired state of a task"
+          description: "the desired range, can be `all` or `1` or `1,2,3`"
           type: "string"
       responses:
         200:
@@ -675,10 +671,6 @@ paths:
         - name: "range"
           in: "query"
           description: "the desired range"
-          type: "string"
-        - name: "state"
-          in: "query"
-          description: "the desired state"
           type: "string"
       responses:
         200:
@@ -813,6 +805,54 @@ paths:
             $ref: "#/definitions/task"
         412:
           description: "Parameters is not satisfiy required"
+  
+  /task/comfirm:
+    post:
+      tags:
+        - "Task"
+      summary: "Publisher confirm task over"
+      description: "Publisher will confirm the task is over, set the TR's state to OVER state."
+      produces:
+        - "application/json"
+        - "applicaiton/xml"
+      parameters:
+        - name: "body"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/confirm_params"
+      responses:
+        200:
+          description: "Success confirm the task"
+        412:
+          description: "The params are not enough"
+        500:
+          description: "Wrong in the server"
+  
+  /task/accepter:
+    get:
+      tags:
+        - "Task"
+      summary: "Find all accepters of a task"
+      description: "return all of the accepters of a task\n The task id should be one integer."
+      produces:
+        - "application/json"
+        - "applicaiton/xml"
+      parameters:
+        - name: "task_id"
+          in: "query"
+          type: "integer"
+          required: true
+      responses:
+        200:
+          description: "Successfully return the task"
+          schema:
+            $ref: "#/definitions/task"
+        412:
+          description: "The params are not enough"
+        500:
+          description: "Wrong in the server"
+
 
   /user/login:
     post:
@@ -1372,6 +1412,26 @@ definitions:
     xml:
       name: "task_complement"
 
+  confirm_params:
+    type: "object"
+    required:
+      - "username"
+      - "task_id"
+      - "score"
+    properties:
+      username:
+        type: "string"
+        example: "hyx"
+        description: "the accepter's username"
+      task_id:
+        type: "integer"
+        example: 2
+        description: "The task's id"
+      score:
+        type: "integer"
+        example: 3
+        description: "The publisher make a score to accepter"
+        
   user_login:
     type: "object"
     require:
