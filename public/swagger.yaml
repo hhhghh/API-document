@@ -1309,10 +1309,13 @@ definitions:
     - "introduction"
     - "money"
     - "score"
-    - "number"
+    - "max_accepter_number"
     - "publisher"
-    - "state"
     - "type"
+    - "starttime"
+    - "endtime"
+    - "content"
+    - "range"
     properties:
       task_id:
         type: "integer"
@@ -1332,12 +1335,24 @@ definitions:
         type: "string"
         example: "hyx"
         description: "The username of the release user"
-      state:
-        type: "string"
-        example: "processing"
+      score:
+        type: "number"
+        example: 3.5
       type:
         type: "integer"
         example: 2
+      starttime:
+        type: "string"
+        example: "2018-11-01 11:00:00"
+      endtime: 
+        type: "string"
+        example: "2018-11-02 11:03:03"
+      content: 
+        type: "string"
+        example: "sad"
+      range: 
+        type: "array"
+        example: [1,2,3]
     xml:
       name: "task"
 
@@ -1348,9 +1363,13 @@ definitions:
       - "introduction"
       - "money"
       - "score"
-      - "number"
+      - "max_accepter_number"
       - "publisher"
       - "type"
+      - "starttime"
+      - "endtime"
+      - "content"
+      - "range"
     properties:
       title:
         type: "string"
@@ -1362,6 +1381,9 @@ definitions:
         type: "number"
         example: 10
         description: "The money will be paid"
+      score:
+        type: "number"
+        example: 3.5
       max_accepter_number:
         type: "integer"
         example: "100"
@@ -1373,6 +1395,18 @@ definitions:
       type:
         type: "integer"
         example: 2
+      starttime:
+        type: "string"
+        example: "2018-11-01 11:00:00"
+      endtime: 
+        type: "string"
+        example: "2018-11-02 11:03:03"
+      content: 
+        type: "string"
+        example: "sad"
+      range: 
+        type: "array"
+        example: [1,2,3]
     xml:
       name: "task"
   
