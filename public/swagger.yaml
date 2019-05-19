@@ -680,33 +680,6 @@ paths:
         412:
           description: "Parameters is not satisfiy required"
   
-  /task/state:
-    get:
-      tags:
-        - "Task"
-      summary: "Find a task by task id and the accepter's username"
-      description: "Set both task_id and username, then the api will return the relations state."
-      produces:
-        - "application/json"
-      parameters:
-        - name: "task_id"
-          in: "query"
-          description: "the desired type"
-          type: "string"
-          required: true
-        - name: "username"
-          in: "query"
-          description: "the user's username"
-          type: "string"
-          required: true
-      responses:
-        200:
-          description: "Successful execute, find some (or no) task"
-          schema:
-            $ref: "#/definitions/task"
-        412:
-          description: "Parameters is not satisfiy required"
-  
   /task/acceptance:
     get: 
       tags:
@@ -1431,7 +1404,6 @@ definitions:
     required: 
       - "task_id"
       - "username"
-      - "score"
     properties:
       task_id:
         type: "integer"
@@ -1439,10 +1411,6 @@ definitions:
       username:
         type: "string"
         example: "hyx"
-      score:
-        type: "number"
-        description: "The score that give to the publisher"
-        example: 4.5
     xml:
       name: "task_complement"
 
