@@ -24,8 +24,8 @@ tags:
     url: "https://github.com/hhhghh/Dashboard/blob/master/api%E8%AE%BE%E8%AE%A1.md"   
     
 schemes:
-- "http"
 - "https"
+- "http"
 
 paths:
   /team/Id:
