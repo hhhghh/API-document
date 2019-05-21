@@ -3,7 +3,7 @@ info:
   description: "This is a sample test.  You can find out more at [https://github.com/hhhghh/Dashboard](https://github.com/hhhghh/Dashboard)     For this sample, you can use the api key `special-key` to test the authorization filters."
   version: "1.0.0"
   title: "Happy spare money"
-host: "139.196.79.193:5400"
+host: "localhost:3000"
 basePath: /api/v1
 
 tags:
@@ -24,8 +24,9 @@ tags:
     url: "https://github.com/hhhghh/Dashboard/blob/master/api%E8%AE%BE%E8%AE%A1.md"   
     
 schemes:
-- "https"
 - "http"
+- "https"
+
 
 paths:
   /team/Id:
@@ -490,6 +491,28 @@ paths:
           description: "Parameter incomplete"
         412:
           description: "Abnormal"
+          
+  /file/TeamLogo:  
+    post:
+      tags:
+      - "Team"
+      summary: "Upload team logo"
+      description: "Returns url of team logo"
+      operationId: "UploadTeamLogo"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "team_id"
+        in: "formData"
+        description: "team logo"
+        required: true
+        type: "file"
+
+      responses:
+        200:
+          description: "Successful operation"  
+       
         
 
   /task:
