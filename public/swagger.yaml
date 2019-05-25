@@ -3,7 +3,8 @@ info:
   description: "This is a sample test.  You can find out more at [https://github.com/hhhghh/Dashboard](https://github.com/hhhghh/Dashboard)     For this sample, you can use the api key `special-key` to test the authorization filters."
   version: "1.0.0"
   title: "Happy spare money"
-host: "localhost:3000"
+  host: "139.196.79.193:5400"
+
 basePath: /api/v1
 
 tags:
@@ -890,6 +891,20 @@ paths:
           description: "账户类型错误"
         500:
           description: "服务器异常" 
+  
+  /user/logout:
+    post:
+      tags:
+        - "User"
+      summary: "logout"
+      description: "log out through cookies"
+      responses:
+        200:
+          description: "登出成功"
+        401:
+          description: "未携带cookies"
+        402:
+          description: "cookies已过期，已自动登出"
 
   /user/getuser:
     get:
@@ -1109,7 +1124,61 @@ paths:
         406:
           description: "没有拉黑无法取消拉黑"
         500:
-          description: "服务器异常"   
+          description: "服务器异常" 
+
+  /user/getAcceptedFinishedTasks:
+    get:
+      tags:
+        - "User"
+      summary: "user finished task"
+      description: "get the user finished task by username"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "username"
+        in: "query"
+        required: true
+        description: "username"
+      responses:
+        200:
+          description: "查询成功并返回用户完成的任务"
+          schema:
+            $ref: "#/definitions/user_getAcceptedFinishedTasks"
+        412:
+          description: "用户不存在"
+        500:
+          description: "服务器异常" 
+  
+  /user/getPublishedWaitedTasks:
+    get:
+      tags:
+        - "User"
+      summary: "Evaluate the person who has completed the task"
+      description: "Evaluate the person who has completed the task"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "username"
+        in: "query"
+        required: true
+        description: "username"
+      responses:
+        200:
+          description: "查询成功并返回用户发布的等待接受的任务"
+          schema:
+            $ref: "#/definitions/user_getPublishedWaitedTasks"
+        412:
+          description: "用户不存在"
+        500:
+          description: "服务器异常" 
+  
+  /user/setRate:
+    post:
+      tags:
+        - "User"
+      summary: ""
 
 
 
@@ -1491,7 +1560,7 @@ definitions:
         example: "123"
     xml:
       name: "user_login"
-    
+
   user_getinfo:
     type: "object"
     require:
@@ -1717,4 +1786,100 @@ definitions:
         example: "1"
     xml:
       name: "team_cancelblacklist"
+
+  user_getAcceptedFinishedTasks:
+    type: "object"
+    require:
+      -"code"
+      -"msg"
+      -"data"
+    properties:
+      code:
+        type: "integer"
+        example: 200
+      msg:
+        type: "string"
+        example: "success"
+      data:
+        type: "object"
+        require:
+          -"task_id"
+          -"title"
+          -"introduction"
+          -"starttime"
+          -"endtime"
+          -"score"
+          -"money"
+        properties:
+          task_id:
+            type: "integer"
+            example: 1
+          title:
+            type: "string"
+            example: "问卷调查"
+          introduction:
+            type: "string"
+            example: "null"
+          starttime:
+            type: "string"
+            example: "2018-11-01T03:00:00.000Z"
+          endtime:
+            type: "string"
+            example: "2018-11-02T03:03:03.000Z"
+          score:
+            type: "integer"
+            example: 4
+          money:
+            type: "integer"
+            example: 10 
+    xml:
+      name: "user_getAcceptedFinishedTasks"
+
+  user_getPublishedWaitedTasks:
+    type: "object"
+    require:
+      -"code"
+      -"msg"
+      -"data"
+    properties:
+      code:
+        type: "integer"
+        example: 200
+      msg:
+        type: "string"
+        example: "success"
+      data:
+        type: "object"
+        require:
+          -"task_id"
+          -"title"
+          -"introduction"
+          -"starttime"
+          -"endtime"
+          -"score"
+          -"money"
+        properties:
+          task_id:
+            type: "integer"
+            example: 1
+          title:
+            type: "string"
+            example: "问卷调查"
+          introduction:
+            type: "string"
+            example: "null"
+          starttime:
+            type: "string"
+            example: "2018-11-01T03:00:00.000Z"
+          endtime:
+            type: "string"
+            example: "2018-11-02T03:03:03.000Z"
+          score:
+            type: "integer"
+            example: 4
+          money:
+            type: "integer"
+            example: 10 
+    xml:
+      name: "user_getPublishedWaitedTasks"
       
