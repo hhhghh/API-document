@@ -3,8 +3,8 @@ info:
   description: "This is a sample test.  You can find out more at [https://github.com/hhhghh/Dashboard](https://github.com/hhhghh/Dashboard)     For this sample, you can use the api key `special-key` to test the authorization filters."
   version: "1.0.0"
   title: "Happy spare money"
-  host: "139.196.79.193:5400"
-
+  
+host: "139.196.79.193:5400"
 basePath: /api/v1
 
 tags:
