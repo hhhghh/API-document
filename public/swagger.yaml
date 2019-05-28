@@ -1043,6 +1043,61 @@ paths:
         500:
           description: "服务器异常" 
 
+  /user/getavatar:
+    get:
+      tags:
+        - "User"
+      summary: "get user avatar"
+      description: "get user avatar by username"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "username"
+        in: "query"
+        required: true
+        description: "username"
+        type: "string"
+      responses:
+        200:
+          description: "查询成功并返回用户头像url"
+          schema:
+            $ref: "#/definitions/user_getavatar"
+        400:
+          description: "参数错误"
+        412:
+          description: "查询用户不存在"
+        500:
+          description: "服务器异常"
+  
+  /user/getteammembersavatat:
+    post:
+      tags:
+        - "User"
+      summary: "get a team members avatar"
+      description: "get the team members avatar by the team membername list"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        description: "username list"
+        schema:
+          $ref: "#/definitions/username_list"
+      responses:
+        200:
+          description: "查询成功并返回用户头像url"
+          schema:
+            $ref: "#/definitions/user_getteammembersavatat"
+        400:
+          description: "参数错误"
+        412:
+          description: "查询用户不存在"
+        500:
+          description: "服务器异常"
+
   /user/update:
     put:
       tags:
@@ -1959,7 +2014,75 @@ definitions:
             example: 10 
     xml:
       name: "user_getPublishedWaitedTasks"
-      
+  
+  user_getavatar:
+    type: "object"
+    required:
+      - "code"
+      - "msg"
+      - "data"
+    properties:
+      code:
+        type: "integer"
+        example: 200
+      msg:
+        type: "string"
+        example: "success"
+      data:
+        type: "string"
+        example: "http://139.196.79.193:3000/awesomeface.png"    
+    xml:
+      name: "user_getavatar"
+  
+  username_list:
+    type: "object"
+    required:
+      - "members"
+    properties:
+      members:
+        type: "array"
+        items: 
+          type: "object"
+          required:
+            - "username"
+          properties:
+            username:
+              type: "string"
+              example: "hyx"
+
+    xml:
+      name: "username_list"
+  
+  user_getteammembersavatat:
+    type: "object"
+    required:
+      - "code"
+      - "msg"
+      - "data"
+    properties:
+      code:
+        type: "integer"
+        example: 200
+      msg:
+        type: "string"
+        example: "success"
+      data:
+        type: "array"
+        items:
+          type: "object"
+          required:
+            - "username"
+            - "avatar"
+          properties:
+            username:
+              type: "string"
+              example: "hyx"
+            avatar:
+              type: "string"
+              example: "http://139.196.79.193:3000/awesomeface.png"    
+    xml:
+      name: "user_getteammembersavatat"
+  
   Toast:
     type: "object"
     required:
@@ -1986,4 +2109,3 @@ definitions:
       
     xml:
       name: "Toast"
-      
