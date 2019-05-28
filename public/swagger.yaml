@@ -3,8 +3,8 @@ info:
   description: "This is a sample test.  You can find out more at [https://github.com/hhhghh/Dashboard](https://github.com/hhhghh/Dashboard)     For this sample, you can use the api key `special-key` to test the authorization filters."
   version: "1.0.0"
   title: "Happy spare money"
-  host: "139.196.79.193:5400"
 
+host: "localhost:3000"
 basePath: /api/v1
 
 tags:
@@ -30,6 +30,87 @@ schemes:
 
 
 paths:
+  /toast/:
+    get:
+      tags:
+      - "User"
+      summary: "Find user toast"
+      description: "Returns user toast"
+      operationId: "getToastByUsername"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "username"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Toast"
+        220:
+          description: "No Toast"
+        400:
+          description: "Parameter incomplete"
+        412:
+          description: "Abnormal"
+  
+  /toast/Id/:
+    delete:
+      tags:
+      - "User"
+      summary: "Delete user toast by id"
+      description: "Delete user toast"
+      operationId: "deleteToastById"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "id"
+        in: "query"
+        description: "id"
+        required: true
+        type: "integer"
+        format: "int32"
+      responses:
+        200:
+          description: "Successful operation"
+        220:
+          description: "No Toast"
+        400:
+          description: "Parameter incomplete"
+        412:
+          description: "Abnormal"
+   
+  /toast/Username/:
+    delete:
+      tags:
+      - "User"
+      summary: "Delete user toast by username"
+      description: "Delete user toast"
+      operationId: "deleteToastByUsername"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "username"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+        220:
+          description: "No Toast"
+        400:
+          description: "Parameter incomplete"
+        412:
+          description: "Abnormal"
+          
   /team/Id:
     get:
       tags:
@@ -519,6 +600,8 @@ paths:
       produces:
       - "application/json"
       - "application/xml"
+      consumes:
+      - multipart/form-data
       parameters:
       - name: "logo"
         in: "formData"
@@ -920,6 +1003,7 @@ paths:
         in: "query"
         required: true
         description: "username"
+        type: "string"
       responses:
         200:
           description: "查询成功并返回用户基本信息"
@@ -946,6 +1030,7 @@ paths:
         in: "query"
         required: true
         description: "organization's name"
+        type: "string"
       responses:
         200:
           description: "查询成功并返回用户基本信息"
@@ -1140,6 +1225,7 @@ paths:
         in: "query"
         required: true
         description: "username"
+        type: "string"
       responses:
         200:
           description: "查询成功并返回用户完成的任务"
@@ -1164,6 +1250,7 @@ paths:
         in: "query"
         required: true
         description: "username"
+        type: "string"
       responses:
         200:
           description: "查询成功并返回用户发布的等待接受的任务"
@@ -1174,28 +1261,13 @@ paths:
         500:
           description: "服务器异常" 
   
-  /user/setRate:
-    post:
-      tags:
-        - "User"
-      summary: ""
-
-
-
-# securityDefinitions:
-#   petstore_auth:
-#     type: "oauth2"
-#     authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
-#     flow: "implicit"
-#     scopes:
-#       write:pets: "modify pets in your account"
-#       read:pets: "read your pets"
-#   api_key:
-#     type: "apiKey"
-#     name: "api_key"
-#     in: "header"   
-   
+  # /user/setRate:
+  #   post:
+  #     tags:
+  #       - "User"
+  #     summary: ""
       
+
 definitions:     
   Teamlabels:
     type: "object"
@@ -1434,6 +1506,8 @@ definitions:
       range: 
         type: "array"
         example: [1,2,3]
+        items:
+          type: "integer"
     xml:
       name: "task"
 
@@ -1488,8 +1562,11 @@ definitions:
       range: 
         type: "array"
         example: [1,2,3]
+        items:
+          type: "integer"
+
     xml:
-      name: "task"
+      name: "task_create_param"
   
   task_acceptance:
     type: "object"
@@ -1544,10 +1621,10 @@ definitions:
         
   user_login:
     type: "object"
-    require:
-      -"type"
-      -"username"
-      -"password"
+    required:
+      - "type"
+      - "username"
+      - "password"
     properties:
       type:
         type: "integer"
@@ -1563,10 +1640,10 @@ definitions:
 
   user_getinfo:
     type: "object"
-    require:
-      -"code"
-      -"msg"
-      -"data"
+    required:
+      - "code"
+      - "msg"
+      - "data"
     properties:
       code:
         type: "integer"
@@ -1576,14 +1653,14 @@ definitions:
         example: "success"
       data:
         type: "object"
-        require:
-          -"username"
-          -"name"
-          -"school"
-          -"grade"
-          -"phone"
-          -"weChat"
-          -"qq"
+        required:
+          - "username"
+          - "name"
+          - "school"
+          - "grade"
+          - "phone"
+          - "weChat"
+          - "qq"
         properties:
           username:
             type: "string"
@@ -1611,10 +1688,10 @@ definitions:
   
   user_getorg:
     type: "object"
-    require:
-      -"code"
-      -"msg"
-      -"data"
+    required:
+      - "code"
+      - "msg"
+      - "data"
     properties:
       code:
         type: "integer"
@@ -1624,13 +1701,13 @@ definitions:
         example: "success"
       data:
         type: "object"
-        require:
-          -"orgname"
-          -"score"
-          -"school"
-          -"wechat"
-          -"qq"
-          -"phone_number"
+        required:
+          - "orgname"
+          - "score"
+          - "school"
+          - "wechat"
+          - "qq"
+          - "phone_number"
         properties:
           orgname:
             type: "string"
@@ -1655,20 +1732,20 @@ definitions:
   
   user_update:
     type: "object"
-    require:
-      -"username"
-      -"password"
-      -"score"
-      -"money"
-      -"true_name"
-      -"school_name"
-      -"grade"
-      -"avatar"
-      -"nickname"
-      -"wechat"
-      -"QQ"
-      -"phone_number"
-      -"account_state"
+    required:
+      - "username"
+      - "password"
+      - "score"
+      - "money"
+      - "true_name"
+      - "school_name"
+      - "grade"
+      - "avatar"
+      - "nickname"
+      - "wechat"
+      - "QQ"
+      - "phone_number"
+      - "account_state"
     properties:
       username:
         type: "string"
@@ -1680,7 +1757,7 @@ definitions:
         type: "integer"
         example: 100
       money:
-        type: "integet"
+        type: "integer"
         example: 1632
       true_name:
         type: "string"
@@ -1714,9 +1791,9 @@ definitions:
 
   user_score:
     type: "object"
-    require:
-      -"username"
-      -"score"
+    required:
+      - "username"
+      - "score"
     properties:
       username:
         type: "string"
@@ -1729,9 +1806,9 @@ definitions:
 
   user_blacklist:
     type: "object"
-    require:
-      -"username1"
-      -"username2"
+    required:
+      - "username1"
+      - "username2"
     properties:
       username1:
         type: "string"
@@ -1744,9 +1821,9 @@ definitions:
 
   team_blacklist:
     type: "object"
-    require:
-      -"ins_name"
-      -"team_id"
+    required:
+      - "ins_name"
+      - "team_id"
     properties:
       ins_name:
         type: "string"
@@ -1759,9 +1836,9 @@ definitions:
 
   user_cancelblacklist:
     type: "object"
-    require:
-      -"username1"
-      -"username2"
+    required:
+      - "username1"
+      - "username2"
     properties:
       username1:
         type: "string"
@@ -1774,9 +1851,9 @@ definitions:
 
   team_cancelblacklist:
     type: "object"
-    require:
-      -"ins_name"
-      -"team_id"
+    required:
+      - "ins_name"
+      - "team_id"
     properties:
       ins_name:
         type: "string"
@@ -1789,10 +1866,10 @@ definitions:
 
   user_getAcceptedFinishedTasks:
     type: "object"
-    require:
-      -"code"
-      -"msg"
-      -"data"
+    required:
+      - "code"
+      - "msg"
+      - "data"
     properties:
       code:
         type: "integer"
@@ -1802,14 +1879,14 @@ definitions:
         example: "success"
       data:
         type: "object"
-        require:
-          -"task_id"
-          -"title"
-          -"introduction"
-          -"starttime"
-          -"endtime"
-          -"score"
-          -"money"
+        required:
+          - "task_id"
+          - "title"
+          - "introduction"
+          - "starttime"
+          - "endtime"
+          - "score"
+          - "money"
         properties:
           task_id:
             type: "integer"
@@ -1837,10 +1914,10 @@ definitions:
 
   user_getPublishedWaitedTasks:
     type: "object"
-    require:
-      -"code"
-      -"msg"
-      -"data"
+    required:
+      - "code"
+      - "msg"
+      - "data"
     properties:
       code:
         type: "integer"
@@ -1850,14 +1927,14 @@ definitions:
         example: "success"
       data:
         type: "object"
-        require:
-          -"task_id"
-          -"title"
-          -"introduction"
-          -"starttime"
-          -"endtime"
-          -"score"
-          -"money"
+        required:
+          - "task_id"
+          - "title"
+          - "introduction"
+          - "starttime"
+          - "endtime"
+          - "score"
+          - "money"
         properties:
           task_id:
             type: "integer"
@@ -1882,4 +1959,31 @@ definitions:
             example: 10 
     xml:
       name: "user_getPublishedWaitedTasks"
+      
+  Toast:
+    type: "object"
+    required:
+    - "username"
+    properties:
+      id:
+        type: "integer"
+        format: "int32"
+      username:
+        type: "string"
+      type:
+        type: "integer"
+        format: "int32"
+      message:
+        type: "string"
+      msg_username:
+        type: "string"
+      msg_team_id:
+        type: "integer"
+        format: "int32"
+      msg_task_id:
+        type: "integer"
+        format: "int32"
+      
+    xml:
+      name: "Toast"
       
