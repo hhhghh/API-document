@@ -4,7 +4,7 @@ info:
   version: "1.0.0"
   title: "Happy spare money"
   
-host: "139.196.79.193:5400"
+host: "139.196.79.193:3000"
 basePath: /api/v1
 
 tags:
@@ -893,7 +893,7 @@ paths:
           description: "服务器异常" 
   
   /user/logout:
-    post:
+    get:
       tags:
         - "User"
       summary: "logout"
@@ -902,9 +902,7 @@ paths:
         200:
           description: "登出成功"
         401:
-          description: "未携带cookies"
-        402:
-          description: "cookies已过期，已自动登出"
+          description: "cookies无效"
 
   /user/getuser:
     get:
@@ -931,6 +929,29 @@ paths:
           description: "查询用户不存在"
         500:
           description: "服务器异常" 
+  
+  /user/getPersonalInfo:
+    get:
+      tags:
+        - "User"
+      summary: "get user information"
+      description: "get user information by cookies"
+      produces:
+      - "application/json"
+      - "application/xml"
+      responses:
+        200:
+          description: "查询成功并返回用户基本信息"
+          schema:
+            $ref: "#/definitions/user_getinfo"
+        400:
+          description: "参数错误"
+        401:
+          description: "请登录" 
+        412:
+          description: "查询用户不存在"
+        500:
+          description: "服务器异常"
 
   /user/getorg:
     get:
@@ -1011,6 +1032,32 @@ paths:
           description: "查询用户不存在"
         500:
           description: "服务器异常"
+  
+  /user/getCanPublishTasksOrg:
+    get:
+      tags:
+        - "User"
+      summary: "get the organizations can pubish tasks"
+      description: "get a list include the organization name and organization avatar that can publish tasks in the team"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "teamId"
+        in: "query"
+        required: true
+        description: "team id"
+      responses:
+        200:
+          description: "查询成功并返回数据序列"
+          schema:
+            $ref: "#/definitions/user_getCanPublishTasksOrg"
+        400:
+          description: "参数错误"
+        412:
+          description: "小组不存在"
+        500:
+          description: "服务器异常"
 
   /user/update:
     put:
@@ -1033,6 +1080,26 @@ paths:
           description: "修改成功并返回修改后的用户信息"
         412:
           description: "更新失败"
+        500:
+          description: "服务器异常"
+  
+  /user/updateAvatar:
+    put:
+      tags:
+        - "User"
+      summary: "update user avatar"
+      description: "avatar file"
+      consumes:
+        - multipart/form-data
+      parameters:
+      - name: avatar
+        in: formData
+        type: file
+      responses:
+        200:
+          description: "更新成功并返回更行后的头像url"
+        401:
+          description: "cookies无效"
         500:
           description: "服务器异常"
   
@@ -1227,6 +1294,30 @@ paths:
           description: "用户不存在"
         500:
           description: "服务器异常" 
+  
+  /user/getPublishedFinishedTasks:
+    get:
+      tags:
+        - "User"
+      summary: "get the tasks published by the user and finished by accepter"
+      description: "get the tasks published by the user and finished by accepter"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "username"
+        in: "query"
+        required: true
+        description: "username"
+      responses:
+        200:
+          description: "查询成功并返回用户发布的等待接受的任务"
+          schema:
+            $ref: "#/definitions/user_getPublishedFinishedTasks"
+        412:
+          description: "用户不存在"
+        500:
+          description: "服务器异常"
   
   /user/setRate:
     post:
@@ -1889,6 +1980,54 @@ definitions:
     xml:
       name: "user_getAcceptedFinishedTasks"
 
+  user_getPublishedFinishedTasks:
+    type: "object"
+    require:
+      -"code"
+      -"msg"
+      -"data"
+    properties:
+      code:
+        type: "integer"
+        example: 200
+      msg:
+        type: "string"
+        example: "success"
+      data:
+        type: "object"
+        require:
+          -"taskId"
+          -"title"
+          -"introduction"
+          -"starttime"
+          -"endtime"
+          -"score"
+          -"money"
+        properties:
+          taskId:
+            type: "integer"
+            example: 20
+          title:
+            type: "string"
+            example: "Help me to buy food"
+          introduction:
+            type: "string"
+            example: "null"
+          starttime:
+            type: "string"
+            example: "2019-05-21T03:00:00.000Z"
+          endtime:
+            type: "string"
+            example: "2019-11-02T03:03:03.000Z"
+          score:
+            type: "integer"
+            example: 4
+          money:
+            type: "integer"
+            example: 10 
+    xml:
+      name: "user_getPublishedFinishedTasks" 
+
   user_getPublishedWaitedTasks:
     type: "object"
     require:
@@ -2004,3 +2143,33 @@ definitions:
               example: "http://139.196.79.193:3000/awesomeface.png"    
   xml:
       name: "user_getteammembersavatat"
+
+  user_getCanPublishTasksOrg:
+    type: "object"
+    require:
+      -"code"
+      -"msg"
+      -"data"
+    properties:
+      code:
+        type: "integer"
+        example: 200
+      msg:
+        type: "string"
+        example: "success"
+      data:
+        type: "array"
+        items:
+          type: "object"
+          require:
+            -"organization name"
+            -"organization avatar"
+          properties:
+            organization name:
+              type: "string"
+              example: "org1"
+            organization avatar:
+              type: "url"
+              example: "http://139.196.79.193:3000/awesomeface.png"                
+  #xml:
+  #    name: "user_getCanPublishTasksOrg"  
