@@ -47,10 +47,10 @@ paths:
           description: "Successful operation"
           schema:
             $ref: "#/definitions/Toast"
-        220:
-          description: "cookie is incorrect, please log in again"
         400:
           description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"
         412:
           description: "Abnormal"
   
@@ -94,10 +94,10 @@ paths:
       responses:
         200:
           description: "Successful operation"
-        220:
-          description: "cookie is incorrect, please log in again"
         400:
           description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"
         412:
           description: "Abnormal"
           
@@ -188,10 +188,10 @@ paths:
           description: "Team leader is wrong"
         211:
           description: "Team member is wrong"
-        220:
-          description: "cookie is incorrect, please log in again"
         400:
           description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"   
         412:
           description: "Abnormal"
           
@@ -345,10 +345,10 @@ paths:
           description: "Team leader does not exist"
         211:
           description: "Some Team members does not exist"
-        220:
-          description: "cookie is incorrect, please log in again"
         400:
           description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"        
         412:
           description: "Abnormal"
          
@@ -377,10 +377,10 @@ paths:
           description: "Team leader dose not exist or dose not correct"
         213:
           description: "Team does not exist"
-        220:
-          description: "cookie is incorrect, please log in again"
         400:
           description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"        
         412:
           description: "Abnormal"
     
@@ -413,10 +413,10 @@ paths:
           description: "Team leader is wrong"
         213:
           description: "Team does not exist"
-        220:
-          description: "cookie is incorrect, please log in again"
         400:
           description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"      
         412:
           description: "Abnormal"
           
@@ -451,10 +451,10 @@ paths:
           description: "Team does not exist"
         215:
           description: "Not allowed to add"
-        220:
-          description: "cookie is incorrect, please log in again"
         400:
           description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"      
         412:
           description: "Abnormal"
     
@@ -489,10 +489,10 @@ paths:
           description: "Team leader verification is required"
         215:
           description: "Not allowed to add"
-        220:
-          description: "cookie is incorrect, please log in again"
         400:
           description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"       
         412:
           description: "Abnormal"         
   
@@ -533,10 +533,10 @@ paths:
           description: "Team leader is wrong"
         216:
           description: "Team leader cannot be deleted"
-        220:
-          description: "cookie is incorrect, please log in again"
         400:
           description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"       
         412:
           description: "Abnormal"
         
@@ -573,10 +573,10 @@ paths:
           description: "There is no team"
         216:
           description: "Team leader cannot leave the team"
-        220:
-          description: "cookie is incorrect, please log in again"
         400:
           description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"      
         412:
           description: "Abnormal"
           
