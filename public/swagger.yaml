@@ -210,11 +210,6 @@ paths:
         required: true
         type: "integer"
         format: "int32"
-      - name: "member_username"
-        in: "query"
-        description: "member of team"
-        required: true
-        type: "string"
       responses:
         200:
           description: "Is team member"      
@@ -224,6 +219,8 @@ paths:
           description: "Team not found"
         400:
           description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"
         412:
           description: "Abnormal"
           
