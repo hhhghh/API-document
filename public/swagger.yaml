@@ -40,7 +40,6 @@ paths:
       produces:
       - "application/json"
       - "application/xml"
-      parameters:
 
       responses:
         200:
@@ -89,8 +88,6 @@ paths:
       produces:
       - "application/json"
       - "application/xml"
-      parameters:
-
       responses:
         200:
           description: "Successful operation"
@@ -147,11 +144,6 @@ paths:
         required: true
         type: "integer"
         format: "int32"
-      - name: "leader"
-        in: "query"
-        description: "leader of team"
-        required: true
-        type: "string"
       responses:
         200:
           description: "Is team leader"
@@ -174,12 +166,18 @@ paths:
       - "application/json"
       - "application/xml"
       parameters:
-      - name: "body"
-        in: "body"
-        description: "Change team leader"
+      
+      - name: "team_id"
+        in: "query"
+        description: "ID of team"
         required: true
-        schema:
-          $ref: "#/definitions/Invitation"
+        type: "integer"
+        format: "int32"
+      - name: "username"
+        in: "query"
+        description: "Change leader"
+        required: true
+        type: "string"
 
       responses:
         200:
@@ -299,12 +297,7 @@ paths:
       produces:
       - "application/json"
       - "application/xml"
-      parameters:
-      - name: "member_username"
-        in: "query"
-        description: "MemberName of team"
-        required: true
-        type: "string"
+      
       responses:
         200:
           description: "Successful operation"
@@ -400,12 +393,6 @@ paths:
         required: true
         type: "integer"
         format: "int32"
-      - name: "leader"
-        in: "query"
-        description: "Leader of team"
-        required: true
-        type: "string"
-
       responses:
         200:
           description: "Successful operation"
@@ -469,12 +456,12 @@ paths:
       - "application/json"
       - "application/xml"
       parameters:
-      - name: "body"
-        in: "body"
-        description: "Create team object"
+      - name: "team_id"
+        in: "query"
+        description: "Id of team"
         required: true
-        schema:
-          $ref: "#/definitions/Addition"
+        type: "integer"
+        format: "int32"
 
       responses:
         200:
@@ -513,11 +500,6 @@ paths:
         required: true
         type: "integer"
         format: "int32"
-      - name: "leader"
-        in: "query"
-        description: "Leader of team"
-        required: true
-        type: "string"
       - name: "username"
         in: "query"
         description: "Member of team"
@@ -558,11 +540,6 @@ paths:
         required: true
         type: "integer"
         format: "int32"
-      - name: "username"
-        in: "query"
-        description: "Member of team"
-        required: true
-        type: "string"
 
       responses:
         200:
@@ -573,6 +550,43 @@ paths:
           description: "There is no team"
         216:
           description: "Team leader cannot leave the team"
+        400:
+          description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"      
+        412:
+          description: "Abnormal"
+          
+  /team/Member/Rejection:  
+    post:
+      tags:
+      - "Team"
+      summary: "Reject user access to the group"
+      description: "Returns true or false"
+      operationId: "rejectUserToGrope"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "Rejected User"
+        required: true
+        type: "string"
+      - name: "team_id"
+        in: "query"
+        description: "Id of team"
+        required: true
+        type: "integer"
+        format: "int32"
+
+      responses:
+        200:
+          description: "Successful operation"     
+        212:
+          description: "Team leader is wrong"
+        213:
+          description: "There is no team"
         400:
           description: "Parameter incomplete"
         401:
@@ -1383,9 +1397,6 @@ definitions:
       team_name:
         type: "string"
         example: ""
-      leader:
-        type: "string"
-        example: ""
       logo:
         type: "string"
         example: "http://139.196.79.193:3000/awesomeface.png"
@@ -1417,9 +1428,6 @@ definitions:
         type: "integer"
         format: "int32"
       team_name:
-        type: "string"
-        example: ""
-      leader:
         type: "string"
         example: ""
       logo:
@@ -1471,9 +1479,6 @@ definitions:
       team_id:
         type: "integer"
         format: "int32"
-      leader:
-        type: "string"
-        example: ""
       user:
         type: "array"
         items:
@@ -1484,21 +1489,6 @@ definitions:
               example: ""
     xml:
       name: "Invitation"
-      
-  Addition:
-    type: "object"
-    required:
-    - "team_id"
-    - "username"
-    properties:
-      team_id:
-        type: "integer"
-        format: "int32"
-      username:
-        type: "string"
-        example: ""
-    xml:
-      name: "Addition"
 
   task:
     type: "object"
