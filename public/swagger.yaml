@@ -115,6 +115,12 @@ paths:
         required: true
         type: "integer"
         format: "int32"
+      - name: "type"
+        in: "query"
+        description: "Type of team to return"
+        required: true
+        type: "integer"
+        format: "int32"
       responses:
         200:
           description: "Successful operation"
@@ -240,6 +246,12 @@ paths:
         description: "Name of team"
         required: true
         type: "string"
+      - name: "type"
+        in: "query"
+        description: "Type of team to return"
+        required: true
+        type: "integer"
+        format: "int32"
       responses:
         200:
           description: "Successful operation"
@@ -270,6 +282,12 @@ paths:
         description: "Label of team"
         required: true
         type: "string"
+      - name: "type"
+        in: "query"
+        description: "Type of team to return"
+        required: true
+        type: "integer"
+        format: "int32"
       responses:
         200:
           description: "Successful operation"
@@ -294,6 +312,13 @@ paths:
       produces:
       - "application/json"
       - "application/xml"
+      parameters:
+      - name: "type"
+        in: "query"
+        description: "Type of team to return"
+        required: true
+        type: "integer"
+        format: "int32"
       
       responses:
         200:
