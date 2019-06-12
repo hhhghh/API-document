@@ -591,6 +591,23 @@ paths:
         412:
           description: "Abnormal"
           
+  /team/DefaultGroup:
+    get:
+      tags:
+      - "Team"
+      summary: "Get default group"
+      description: "Returns default group"
+      operationId: "getDefaultGroup"
+      produces:
+      - "application/json"
+      - "application/xml"
+      
+      responses:
+        200:
+          description: "Successful operation"       
+        412:
+          description: "Abnormal"
+          
   /file/TeamLogo:  
     post:
       tags:
