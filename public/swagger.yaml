@@ -230,6 +230,37 @@ paths:
         412:
           description: "Abnormal"
           
+  /team/OrgMember:
+    get:
+      tags:
+      - "Team"
+      summary: "Judge organization whether it is team Member"
+      description: "Returns true or false"
+      operationId: "isTeamOrgMember"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "team_id"
+        in: "query"
+        description: "ID of team"
+        required: true
+        type: "integer"
+        format: "int32"
+      responses:
+        200:
+          description: "Is team member"      
+        211:
+          description: "Is not team member"
+        213:
+          description: "Team not found"
+        400:
+          description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"
+        412:
+          description: "Abnormal"
+          
   /team/Name:
     get:
       tags:
