@@ -362,6 +362,42 @@ paths:
           description: "Not joining the team" 
         400:
           description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"  
+        412:
+          description: "Abnormal"
+  
+  /team/OrgName:
+    get:
+      tags:
+      - "Team"
+      summary: "Find team by OrgName"
+      description: "Returns a team list"
+      operationId: "getTeamByOrgName"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "type"
+        in: "query"
+        description: "Type of team to return"
+        required: true
+        type: "integer"
+        format: "int32"
+      
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Team"       
+        213:
+          description: "Not joining the team" 
+        400:
+          description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"  
         412:
           description: "Abnormal"
           
