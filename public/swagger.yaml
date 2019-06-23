@@ -917,6 +917,7 @@ paths:
       - name: "username"
         in: "query"
         required: true
+        type: "string"
         description: "username"
       responses:
         200:
@@ -965,6 +966,7 @@ paths:
       parameters:
       - name: "organization's name"
         in: "query"
+        type: "string"
         required: true
         description: "organization's name"
       responses:
@@ -990,6 +992,7 @@ paths:
       - "application/xml"
       parameters:
       - name: "username"
+        type: "string"
         in: "query"
         required: true
         description: "username"
@@ -1045,6 +1048,7 @@ paths:
       parameters:
       - name: "teamId"
         in: "query"
+        type: "string"
         required: true
         description: "team id"
       responses:
@@ -1088,13 +1092,13 @@ paths:
       tags:
         - "User"
       summary: "update user avatar"
-      description: "avatar file"
       consumes:
-        - multipart/form-data
+        - "multipart/form-data"
       parameters:
-      - name: avatar
-        in: formData
-        type: file
+        - in: "formData"
+          name: "avatar"
+          type: "file"
+          description: "The file to upload."
       responses:
         200:
           description: "更新成功并返回更行后的头像url"
@@ -1259,6 +1263,7 @@ paths:
       parameters:
       - name: "username"
         in: "query"
+        type: "string"
         required: true
         description: "username"
       responses:
@@ -1283,6 +1288,7 @@ paths:
       parameters:
       - name: "username"
         in: "query"
+        type: "string"
         required: true
         description: "username"
       responses:
@@ -1307,6 +1313,7 @@ paths:
       parameters:
       - name: "username"
         in: "query"
+        type: "string"
         required: true
         description: "username"
       responses:
@@ -1319,11 +1326,6 @@ paths:
         500:
           description: "服务器异常"
   
-  /user/setRate:
-    post:
-      tags:
-        - "User"
-      summary: ""
 
 
 
@@ -1689,10 +1691,10 @@ definitions:
         
   user_login:
     type: "object"
-    require:
-      -"type"
-      -"username"
-      -"password"
+    required:
+      - "type"
+      - "username"
+      - "password"
     properties:
       type:
         type: "integer"
@@ -1708,10 +1710,10 @@ definitions:
 
   user_getinfo:
     type: "object"
-    require:
-      -"code"
-      -"msg"
-      -"data"
+    required:
+      - "code"
+      - "msg"
+      - "data"
     properties:
       code:
         type: "integer"
@@ -1721,14 +1723,14 @@ definitions:
         example: "success"
       data:
         type: "object"
-        require:
-          -"username"
-          -"name"
-          -"school"
-          -"grade"
-          -"phone"
-          -"weChat"
-          -"qq"
+        required:
+          - "username"
+          - "name"
+          - "school"
+          - "grade"
+          - "phone"
+          - "weChat"
+          - "qq"
         properties:
           username:
             type: "string"
@@ -1756,10 +1758,10 @@ definitions:
   
   user_getorg:
     type: "object"
-    require:
-      -"code"
-      -"msg"
-      -"data"
+    required:
+      - "code"
+      - "msg"
+      - "data"
     properties:
       code:
         type: "integer"
@@ -1769,13 +1771,13 @@ definitions:
         example: "success"
       data:
         type: "object"
-        require:
-          -"orgname"
-          -"score"
-          -"school"
-          -"wechat"
-          -"qq"
-          -"phone_number"
+        required:
+          - "orgname"
+          - "score"
+          - "school"
+          - "wechat"
+          - "qq"
+          - "phone_number"
         properties:
           orgname:
             type: "string"
@@ -1800,20 +1802,20 @@ definitions:
   
   user_update:
     type: "object"
-    require:
-      -"username"
-      -"password"
-      -"score"
-      -"money"
-      -"true_name"
-      -"school_name"
-      -"grade"
-      -"avatar"
-      -"nickname"
-      -"wechat"
-      -"QQ"
-      -"phone_number"
-      -"account_state"
+    required:
+      - "username"
+      - "password"
+      - "score"
+      - "money"
+      - "true_name"
+      - "school_name"
+      - "grade"
+      - "avatar"
+      - "nickname"
+      - "wechat"
+      - "QQ"
+      - "phone_number"
+      - "account_state"
     properties:
       username:
         type: "string"
@@ -1825,7 +1827,7 @@ definitions:
         type: "integer"
         example: 100
       money:
-        type: "integet"
+        type: "integer"
         example: 1632
       true_name:
         type: "string"
@@ -1859,9 +1861,9 @@ definitions:
 
   user_score:
     type: "object"
-    require:
-      -"username"
-      -"score"
+    required:
+      - "username"
+      - "score"
     properties:
       username:
         type: "string"
@@ -1874,9 +1876,9 @@ definitions:
 
   user_blacklist:
     type: "object"
-    require:
-      -"username1"
-      -"username2"
+    required:
+      - "username1"
+      - "username2"
     properties:
       username1:
         type: "string"
@@ -1889,9 +1891,9 @@ definitions:
 
   team_blacklist:
     type: "object"
-    require:
-      -"ins_name"
-      -"team_id"
+    required:
+      - "ins_name"
+      - "team_id"
     properties:
       ins_name:
         type: "string"
@@ -1904,9 +1906,9 @@ definitions:
 
   user_cancelblacklist:
     type: "object"
-    require:
-      -"username1"
-      -"username2"
+    required:
+      - "username1"
+      - "username2"
     properties:
       username1:
         type: "string"
@@ -1919,9 +1921,9 @@ definitions:
 
   team_cancelblacklist:
     type: "object"
-    require:
-      -"ins_name"
-      -"team_id"
+    required:
+      - "ins_name"
+      - "team_id"
     properties:
       ins_name:
         type: "string"
@@ -1934,10 +1936,10 @@ definitions:
 
   user_getAcceptedFinishedTasks:
     type: "object"
-    require:
-      -"code"
-      -"msg"
-      -"data"
+    required:
+      - "code"
+      - "msg"
+      - "data"
     properties:
       code:
         type: "integer"
@@ -1947,14 +1949,14 @@ definitions:
         example: "success"
       data:
         type: "object"
-        require:
-          -"task_id"
-          -"title"
-          -"introduction"
-          -"starttime"
-          -"endtime"
-          -"score"
-          -"money"
+        required:
+          - "task_id"
+          - "title"
+          - "introduction"
+          - "starttime"
+          - "endtime"
+          - "score"
+          - "money"
         properties:
           task_id:
             type: "integer"
@@ -1982,10 +1984,10 @@ definitions:
 
   user_getPublishedFinishedTasks:
     type: "object"
-    require:
-      -"code"
-      -"msg"
-      -"data"
+    required:
+      - "code"
+      - "msg"
+      - "data"
     properties:
       code:
         type: "integer"
@@ -1995,14 +1997,14 @@ definitions:
         example: "success"
       data:
         type: "object"
-        require:
-          -"taskId"
-          -"title"
-          -"introduction"
-          -"starttime"
-          -"endtime"
-          -"score"
-          -"money"
+        required:
+          - "taskId"
+          - "title"
+          - "introduction"
+          - "starttime"
+          - "endtime"
+          - "score"
+          - "money"
         properties:
           taskId:
             type: "integer"
@@ -2030,10 +2032,10 @@ definitions:
 
   user_getPublishedWaitedTasks:
     type: "object"
-    require:
-      -"code"
-      -"msg"
-      -"data"
+    required:
+      - "code"
+      - "msg"
+      - "data"
     properties:
       code:
         type: "integer"
@@ -2043,14 +2045,14 @@ definitions:
         example: "success"
       data:
         type: "object"
-        require:
-          -"task_id"
-          -"title"
-          -"introduction"
-          -"starttime"
-          -"endtime"
-          -"score"
-          -"money"
+        required:
+          - "task_id"
+          - "title"
+          - "introduction"
+          - "starttime"
+          - "endtime"
+          - "score"
+          - "money"
         properties:
           task_id:
             type: "integer"
@@ -2078,10 +2080,10 @@ definitions:
   
   user_getavatar:
     type: "object"
-    require:
-      -"code"
-      -"msg"
-      -"data"
+    required:
+      - "code"
+      - "msg"
+      - "data"
     properties:
       code:
         type: "integer"
@@ -2090,22 +2092,22 @@ definitions:
         type: "string"
         example: "success"
       data:
-        type: "url"
+        type: "string"
         example: "http://139.196.79.193:3000/awesomeface.png"    
     xml:
       name: "user_getavatar"
   
   username_list:
     type: "object"
-    require:
-      -"members"
+    required:
+      - "members"
     properties:
       members:
         type: "array"
         items: 
           type: "object"
-          require:
-            -"username"
+          required:
+            - "username"
           properties:
             username:
               type: "string"
@@ -2116,10 +2118,10 @@ definitions:
   
   user_getteammembersavatat:
     type: "object"
-    require:
-      -"code"
-      -"msg"
-      -"data"
+    required:
+      - "code"
+      - "msg"
+      - "data"
     properties:
       code:
         type: "integer"
@@ -2131,25 +2133,23 @@ definitions:
         type: "array"
         items:
           type: "object"
-          require:
-            -"username"
-            -"avatar"
+          required:
+            - "username"
+            - "avatar"
           properties:
             username:
               type: "string"
               example: "hyx"
             avatar:
-              type: "url"
+              type: "string"
               example: "http://139.196.79.193:3000/awesomeface.png"    
-  xml:
-      name: "user_getteammembersavatat"
 
   user_getCanPublishTasksOrg:
     type: "object"
-    require:
-      -"code"
-      -"msg"
-      -"data"
+    required:
+      - "code"
+      - "msg"
+      - "data"
     properties:
       code:
         type: "integer"
@@ -2161,15 +2161,15 @@ definitions:
         type: "array"
         items:
           type: "object"
-          require:
-            -"organization name"
-            -"organization avatar"
+          required:
+            - "organization name"
+            - "organization avatar"
           properties:
             organization name:
               type: "string"
               example: "org1"
             organization avatar:
-              type: "url"
+              type: "string"
               example: "http://139.196.79.193:3000/awesomeface.png"                
   #xml:
   #    name: "user_getCanPublishTasksOrg"  
