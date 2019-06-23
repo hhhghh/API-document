@@ -30,6 +30,74 @@ schemes:
 
 
 paths:
+  /toast/:
+    get:
+      tags:
+      - "User"
+      summary: "Find user toast"
+      description: "Returns user toast"
+      operationId: "getToastByUsername"
+      produces:
+      - "application/json"
+      - "application/xml"
+
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Toast"
+        400:
+          description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"
+        412:
+          description: "Abnormal"
+  
+  /toast/Id/:
+    delete:
+      tags:
+      - "User"
+      summary: "Delete user toast by id"
+      description: "Delete user toast"
+      operationId: "deleteToastById"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "id"
+        in: "query"
+        description: "id"
+        required: true
+        type: "integer"
+        format: "int32"
+      responses:
+        200:
+          description: "Successful operation"
+        400:
+          description: "Parameter incomplete"
+        412:
+          description: "Abnormal"
+   
+  /toast/Username/:
+    delete:
+      tags:
+      - "User"
+      summary: "Delete user toast by username"
+      description: "Delete user toast"
+      operationId: "deleteToastByUsername"
+      produces:
+      - "application/json"
+      - "application/xml"
+      responses:
+        200:
+          description: "Successful operation"
+        400:
+          description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"
+        412:
+          description: "Abnormal"
+          
   /team/Id:
     get:
       tags:
@@ -44,6 +112,12 @@ paths:
       - name: "team_id"
         in: "query"
         description: "ID of team to return"
+        required: true
+        type: "integer"
+        format: "int32"
+      - name: "type"
+        in: "query"
+        description: "Type of team to return"
         required: true
         type: "integer"
         format: "int32"
@@ -76,11 +150,6 @@ paths:
         required: true
         type: "integer"
         format: "int32"
-      - name: "leader"
-        in: "query"
-        description: "leader of team"
-        required: true
-        type: "string"
       responses:
         200:
           description: "Is team leader"
@@ -103,12 +172,18 @@ paths:
       - "application/json"
       - "application/xml"
       parameters:
-      - name: "body"
-        in: "body"
-        description: "Change team leader"
+      
+      - name: "team_id"
+        in: "query"
+        description: "ID of team"
         required: true
-        schema:
-          $ref: "#/definitions/Invitation"
+        type: "integer"
+        format: "int32"
+      - name: "username"
+        in: "query"
+        description: "Change leader"
+        required: true
+        type: "string"
 
       responses:
         200:
@@ -141,11 +216,6 @@ paths:
         required: true
         type: "integer"
         format: "int32"
-      - name: "member_username"
-        in: "query"
-        description: "member of team"
-        required: true
-        type: "string"
       responses:
         200:
           description: "Is team member"      
@@ -155,6 +225,39 @@ paths:
           description: "Team not found"
         400:
           description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"
+        412:
+          description: "Abnormal"
+          
+  /team/OrgMember:
+    get:
+      tags:
+      - "Team"
+      summary: "Judge organization whether it is team Member"
+      description: "Returns true or false"
+      operationId: "isTeamOrgMember"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "team_id"
+        in: "query"
+        description: "ID of team"
+        required: true
+        type: "integer"
+        format: "int32"
+      responses:
+        200:
+          description: "Is team member"      
+        211:
+          description: "Is not team member"
+        213:
+          description: "Team not found"
+        400:
+          description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"
         412:
           description: "Abnormal"
           
@@ -174,6 +277,12 @@ paths:
         description: "Name of team"
         required: true
         type: "string"
+      - name: "type"
+        in: "query"
+        description: "Type of team to return"
+        required: true
+        type: "integer"
+        format: "int32"
       responses:
         200:
           description: "Successful operation"
@@ -204,6 +313,12 @@ paths:
         description: "Label of team"
         required: true
         type: "string"
+      - name: "type"
+        in: "query"
+        description: "Type of team to return"
+        required: true
+        type: "integer"
+        format: "int32"
       responses:
         200:
           description: "Successful operation"
@@ -229,11 +344,13 @@ paths:
       - "application/json"
       - "application/xml"
       parameters:
-      - name: "member_username"
+      - name: "type"
         in: "query"
-        description: "MemberName of team"
+        description: "Type of team to return"
         required: true
-        type: "string"
+        type: "integer"
+        format: "int32"
+      
       responses:
         200:
           description: "Successful operation"
@@ -245,6 +362,42 @@ paths:
           description: "Not joining the team" 
         400:
           description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"  
+        412:
+          description: "Abnormal"
+  
+  /team/OrgName:
+    get:
+      tags:
+      - "Team"
+      summary: "Find team by OrgName"
+      description: "Returns a team list"
+      operationId: "getTeamByOrgName"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "type"
+        in: "query"
+        description: "Type of team to return"
+        required: true
+        type: "integer"
+        format: "int32"
+      
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Team"       
+        213:
+          description: "Not joining the team" 
+        400:
+          description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"  
         412:
           description: "Abnormal"
           
@@ -329,12 +482,6 @@ paths:
         required: true
         type: "integer"
         format: "int32"
-      - name: "leader"
-        in: "query"
-        description: "Leader of team"
-        required: true
-        type: "string"
-
       responses:
         200:
           description: "Successful operation"
@@ -398,12 +545,12 @@ paths:
       - "application/json"
       - "application/xml"
       parameters:
-      - name: "body"
-        in: "body"
-        description: "Create team object"
+      - name: "team_id"
+        in: "query"
+        description: "Id of team"
         required: true
-        schema:
-          $ref: "#/definitions/Addition"
+        type: "integer"
+        format: "int32"
 
       responses:
         200:
@@ -442,11 +589,6 @@ paths:
         required: true
         type: "integer"
         format: "int32"
-      - name: "leader"
-        in: "query"
-        description: "Leader of team"
-        required: true
-        type: "string"
       - name: "username"
         in: "query"
         description: "Member of team"
@@ -487,11 +629,6 @@ paths:
         required: true
         type: "integer"
         format: "int32"
-      - name: "username"
-        in: "query"
-        description: "Member of team"
-        required: true
-        type: "string"
 
       responses:
         200:
@@ -506,6 +643,60 @@ paths:
           description: "cookie is incorrect, please log in again"
         400:
           description: "Parameter incomplete"
+        412:
+          description: "Abnormal"
+          
+  /team/Member/Rejection:  
+    post:
+      tags:
+      - "Team"
+      summary: "Reject user access to the group"
+      description: "Returns true or false"
+      operationId: "rejectUserToGrope"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "Rejected User"
+        required: true
+        type: "string"
+      - name: "team_id"
+        in: "query"
+        description: "Id of team"
+        required: true
+        type: "integer"
+        format: "int32"
+
+      responses:
+        200:
+          description: "Successful operation"     
+        212:
+          description: "Team leader is wrong"
+        213:
+          description: "There is no team"
+        400:
+          description: "Parameter incomplete"
+        401:
+          description: "cookie is incorrect, please log in again"      
+        412:
+          description: "Abnormal"
+          
+  /team/DefaultGroup:
+    get:
+      tags:
+      - "Team"
+      summary: "Get default group"
+      description: "Returns default group"
+      operationId: "getDefaultGroup"
+      produces:
+      - "application/json"
+      - "application/xml"
+      
+      responses:
+        200:
+          description: "Successful operation"       
         412:
           description: "Abnormal"
           
@@ -971,11 +1162,13 @@ paths:
         description: "organization's name"
       responses:
         200:
-          description: "查询成功并返回用户基本信息"
+          description: "查询成功并返回机构基本信息"
           schema:
             $ref: "#/definitions/user_getorg"
         400:
           description: "参数错误"
+        402:
+          description: "查询类型错误"
         412:
           description: "查询机构不存在"
         500:
@@ -1036,6 +1229,194 @@ paths:
         500:
           description: "服务器异常"
   
+  /user/verifyPassword:
+    post:
+      tags:
+        - "User"
+      summary: "判断用户密码是否正确"
+      description: "传一个密码和当前cookies保存的用户的密码进行比对"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        description: "username list"
+        schema:
+          type: "object"
+          required: 
+          - "password"
+          properties:
+            password:
+              type: "string"
+              example: "123"
+      responses:
+        200:
+          description: "密码正确"
+        400:
+          description: "参数错误，缺少密码"
+        401:
+          description: "cookies无效"
+        402:
+          description: "密码错误"
+        500:
+          description: "服务器异常"
+          
+  /user/follow:
+    post:
+      tags:
+        - "User"
+      summary: "用户关注组织"
+      description: "通过传入一个机构名让当前cookies中保存的用户关注该机构"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        description: "ins name"
+        schema:
+          type: "object"
+          required: 
+          - "ins_name"
+          properties:
+            ins_name:
+              type: "string"
+              example: "org1"
+      responses:
+        200:
+          description: "关注成功"
+        400:
+          description: "参数不全"
+        401:
+          description: "cookies无效"
+        402:
+          description: "用户或机构不存在"
+        403:
+          description: "已关注，不能重复关注"
+        405:
+          description: "机构不能关注自己"
+        500:
+          description: "服务器异常"
+               
+  /user/cancelfollow:
+    post:
+      tags:
+        - "User"
+      summary: "用户取消关注组织"
+      description: "通过传入一个机构名让当前cookies中保存的用户取消关注该机构"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        description: "ins name"
+        schema:
+          type: "object"
+          required: 
+          - "ins_name"
+          properties:
+            ins_name:
+              type: "string"
+              example: "org1"
+      responses:
+        200:
+          description: "取消关注成功"
+        400:
+          description: "参数不全"
+        401:
+          description: "cookies无效"
+        402:
+          description: "用户或机构不存在"
+        403:
+          description: "未关注，无法取消关注"
+        500:
+          description: "服务器异常"
+          
+  /user/refuseOrgToTeam:
+    post:
+      tags:
+        - "User"
+      summary: "小组组长拒绝机构进入小组"
+      description: "通过传入一个小组id和一个机构名让当前cookies中保存的用户拒绝该机构加入小组"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        description: "ins name"
+        schema:
+          type: "object"
+          required: 
+          - "team_id"
+          - "ins_name"
+          properties:
+            team_id:
+              type: "integer"
+              example: 1
+            ins_name:
+              type: "string"
+              example: "org1"
+      responses:
+        200:
+          description: "拒绝成功"
+        400:
+          description: "参数不全"
+        401:
+          description: "cookies无效"
+        412:
+          description: "小组或机构不存在"
+        413:
+          description: "组长才有权利拒绝机构进组"
+        414:
+          description: "已进组，进组请求有误"
+        500:
+          description: "服务器异常"
+  
+  /user/orgquitteam:
+    post:
+      tags:
+        - "User"
+      summary: "机构退出小组"
+      description: "通过传入一个小组id让当前cookies中保存的机构退出小组"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        description: "team id"
+        schema:
+          type: "object"
+          required: 
+          - "team_id"
+          properties:
+            team_id:
+              type: "integer"
+              example: 1
+      responses:
+        200:
+          description: "拒绝成功"
+        400:
+          description: "参数不全"
+        401:
+          description: "cookies无效"
+        402:
+          description: "机构不存在"
+        403:
+          description: "小组不存在"
+        405:
+          description: "机构不在小组内，退出失败"
+        500:
+          description: "服务器异常"
+  
   /user/getCanPublishTasksOrg:
     get:
       tags:
@@ -1062,6 +1443,31 @@ paths:
           description: "小组不存在"
         500:
           description: "服务器异常"
+          
+  /user/getCanPublishTasksTeamList:
+    get:
+      tags:
+        - "User"
+      summary: "获取机构可以发送任务的小组列表"
+      description: "通过传一个机构名来获取这个机构可以发送任务的小组的列表"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "ins_name"
+        in: "query"
+        type: "string"
+        required: true
+        description: "ins name"
+      responses:
+        200:
+          description: "查询成功并返回小组的小组名和头像"
+        400:
+          description: "参数错误"
+        412:
+          description: "机构不存在"
+        500:
+          description: "服务器异常"
 
   /user/update:
     put:
@@ -1082,6 +1488,8 @@ paths:
       responses:
         200:
           description: "修改成功并返回修改后的用户信息"
+        401:
+          description: "cookies无效"
         412:
           description: "更新失败"
         500:
@@ -1150,6 +1558,8 @@ paths:
       responses:
         200:
           description: "拉黑成功"
+        401:
+          description: "cookies无效"
         402:
           description: "被拉黑的机构或用户不存在"
         403:
@@ -1158,6 +1568,8 @@ paths:
           description: "机构没有拉黑功能"
         406:
           description: "已拉黑，不能重复拉黑"
+        407:
+          description: "自己不能拉黑自己"
         500:
           description: "服务器异常" 
 
@@ -1180,6 +1592,8 @@ paths:
       responses:
         200:
           description: "拉黑成功"
+        401:
+          description: "cookies无效"
         402:
           description: "被拉黑的机构"
         403:
@@ -1188,6 +1602,8 @@ paths:
           description: "小组不存在"
         406:
           description: "已拉黑，不能重复拉黑"
+        407:
+          description: "组长才有权限拉黑组织"
         500:
           description: "服务器异常" 
 
@@ -1210,6 +1626,8 @@ paths:
       responses:
         200:
           description: "取消拉黑成功"
+        401:
+          description: "cookies无效"
         402:
           description: "取消拉黑的机构或用户不存在"
         403:
@@ -1240,6 +1658,8 @@ paths:
       responses:
         200:
           description: "取消屏蔽成功"
+        401:
+          description: "cookies无效"
         402:
           description: "取消拉黑机构不存在"
         403:
@@ -1248,8 +1668,59 @@ paths:
           description: "小组不存在"
         406:
           description: "没有拉黑无法取消拉黑"
+        407:
+          description: "组长才能取消拉黑"
         500:
-          description: "服务器异常" 
+          description: "服务器异常"
+          
+  /user/getUserBlacklist:
+    get:
+      tags:
+        - "User"
+      summary: "获取用户黑名单"
+      description: "通过cookies获取当前用户的黑名单"
+      responses:
+        200:
+          description: "查询成功并返回黑名单内用户的用户名和头像"
+        401:
+          description: "cookies无效"
+        412:
+          description: "用户不存在"
+        500:
+          description: "服务器异常"
+  
+  /user/getOrganizationalFollowersList:
+    get:
+      tags:
+        - "User"
+      summary: "获取机构的关注者列表"
+      description: "通过cookies获取当前机构的关注者列表"
+      responses:
+        200:
+          description: "查询成功并返回关注者的用户名和头像"
+        401:
+          description: "cookies无效"
+        412:
+          description: "机构不存在"
+        500:
+          description: "服务器异常"
+          
+  /user/getUsersFollowedOrganizationsList:
+    get:
+      tags:
+        - "User"
+      summary: "获取用户关注的机构列表"
+      description: "通过cookies获取当前用户的关注机构列表"
+      responses:
+        200:
+          description: "查询成功并返回关注关注机构的机构名和机构头像"
+        401:
+          description: "cookies无效"
+        412:
+          description: "用户不存在"
+        500:
+          description: "服务器异常"
+          
 
   /user/getAcceptedFinishedTasks:
     get:
@@ -1323,6 +1794,85 @@ paths:
             $ref: "#/definitions/user_getPublishedFinishedTasks"
         412:
           description: "用户不存在"
+        500:
+          description: "服务器异常"
+  
+  /user/deposit:
+    get:
+      tags:
+        - "User"
+      summary: "用户充值"
+      description: "通过传递一个整数来给当前cookies中保存的用户充值金额"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "amount"
+        in: "query"
+        type: "integer"
+        required: true
+        description: "金额"
+      responses:
+        200:
+          description: "充值成功并返回账户当前余额"
+        400:
+          description: "参数错误"
+        401:
+          description: "cookies无效"
+        413:
+          description: "用户不存在"
+        500:
+          description: "服务器异常"
+  
+  /user/withdraw:
+    get:
+      tags:
+        - "User"
+      summary: "用户提现"
+      description: "通过传递一个整数来给当前cookies中保存的用户提现金额"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "amount"
+        in: "query"
+        type: "integer"
+        required: true
+        description: "金额"
+      responses:
+        200:
+          description: "提现成功并返回账户当前余额"
+        400:
+          description: "参数错误"
+        401:
+          description: "cookies无效"
+        412:
+          description: "账户余额不足"
+        413:
+          description: "用户不存在"
+        500:
+          description: "服务器异常"
+  
+  /user/searchOrg:
+    get:
+      tags:
+        - "User"
+      summary: "查找机构"
+      description: "通过传递一个字符串名称来查找所有包含该字符串的机构名所对应的机构"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "ins_name"
+        in: "query"
+        type: "string"
+        required: true
+        description: "ins name"
+      responses:
+        200:
+          description: "提现成功并返回所有机构的机构名，个性签名和机构头像"
+        400:
+          description: "参数错误"
         500:
           description: "服务器异常"
   
@@ -1413,9 +1963,6 @@ definitions:
       team_name:
         type: "string"
         example: ""
-      leader:
-        type: "string"
-        example: ""
       logo:
         type: "string"
         example: "http://139.196.79.193:3000/awesomeface.png"
@@ -1447,9 +1994,6 @@ definitions:
         type: "integer"
         format: "int32"
       team_name:
-        type: "string"
-        example: ""
-      leader:
         type: "string"
         example: ""
       logo:
@@ -1501,9 +2045,6 @@ definitions:
       team_id:
         type: "integer"
         format: "int32"
-      leader:
-        type: "string"
-        example: ""
       user:
         type: "array"
         items:
@@ -1514,21 +2055,6 @@ definitions:
               example: ""
     xml:
       name: "Invitation"
-      
-  Addition:
-    type: "object"
-    required:
-    - "team_id"
-    - "username"
-    properties:
-      team_id:
-        type: "integer"
-        format: "int32"
-      username:
-        type: "string"
-        example: ""
-    xml:
-      name: "Addition"
 
   task:
     type: "object"
