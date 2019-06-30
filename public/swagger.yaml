@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  description: "This is a sample test.  You can find out more at [https://github.com/hhhghh/Dashboard](https://github.com/hhhghh/Dashboard)     For this sample, you can use the api key `special-key` to test the authorization filters."
+  description: "This is a API design document.  You can find out more at [https://github.com/hhhghh/Dashboard](https://github.com/hhhghh/Dashboard)     For this sample, you can use the api key `special-key` to test the authorization filters."
   version: "1.0.0"
   title: "Happy spare money"
 
