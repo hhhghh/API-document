@@ -10,19 +10,10 @@ basePath: /api/v1
 tags:
 - name: "Team"
   description: "Everything about your Teams"
-  externalDocs:
-    description: "Find out more "
-    url: "https://github.com/hhhghh/Dashboard/blob/master/api_design_group.md"
 - name: "User"
   description: "Operations about user"
-  externalDocs:
-    description: "Find out more "
-    url: "https://github.com/hhhghh/Dashboard/blob/master/api_design_user.md"
 - name: "Task"
   description: "Operations about task"
-  externalDocs:
-    description: "Find out more "
-    url: "https://github.com/hhhghh/Dashboard/blob/master/api%E8%AE%BE%E8%AE%A1.md"   
     
 schemes:
 - "http"
